@@ -13,6 +13,25 @@ if (path === undefined || path === 'true') {
 const fs = require('fs');
 
 // Watching path
-fs.watch(`${path}/*.zip`, (eventType, fileName) => {
+fs.watch(`${path}`, (eventType, fileName) => {
     console.log(eventType, fileName); // Log event type and file name
 });
+
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+With some dummies tests I found that:
+    -> Adding a file (dragging/copying) will trigger 2 events: rename and change
+    -> Deleting a file will trigger 1 event: rename
+So, I suggest we proceed as follows:
+    -> Register the current event in a variable
+    -> Register the next one (during next triggered event) into another variable
+    -> Check if last event is rename and current event is change, then:
+        -> Check if file has ".zip" extension (could be ".rar" or ".7z" or whatever you need as long as you can adapt it),
+        also check if it still exists (because it could've been deleted during the process)
+        -> If true, then:
+            -> In my case, I need to extract the zip content into the same folder, then delete the zip file
+            (You can do whatever you want, feel free to adapt it to your needs)
+            -> After all, I put null value in both variables
+
+If you need to adapt the treatment of your file(s) and you don't succeed, feel free to open an issue and if I know
+how, it will be a pleasure to help you.
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
