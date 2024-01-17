@@ -8,3 +8,11 @@ if (path === undefined || path === 'true') {
     console.error(`Path must be defined. Use command like that: npm start "path/to/watch"`); // Fancy error for the user
     process.exit(1); // Exit process
 }
+
+// Using fs
+const fs = require('fs');
+
+// Watching path
+fs.watch(`${path}/*.zip`, (eventType, fileName) => {
+    console.log(eventType, fileName); // Log event type and file name
+});
