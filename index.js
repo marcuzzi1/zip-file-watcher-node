@@ -37,22 +37,19 @@ fs.watch(`${path}`, (eventType, fileName) => {
             if ('zip' === fileName.split('.')[1] && fs.existsSync(`${path}\\${fileName}`)) {
                 // CHANGEME - do whatever you want with your file
                 console.log(`File '${fileName}' has been added, extracting it...`); // FIXME - change this for better logs in file
+            } else {
+                console.log(`File '${fileName} is ignored because it doesn't match the criteria`); // FIXME - change this for better logs in file
             }
-            // Otherwise, it doesn't matters for us, so we can set the events to null to avoid any issue (in both cases this piece of code is reached)
-            console.log(`Ignoring file or event`); // TODO - remove this after first tests
-            lastEvent = null;
-            currentEvent = null;
+            // Now, it doesn't matters for us, so we can set the events to null to avoid any issue (in both cases this piece of code is reached)
+            // lastEvent = null;
+            // currentEvent = null;
         } else {
+            console.log(`Event types doesn't match our needs (${lastEvent} -> ${currentEvent})`); // FIXME - change this for better logs in file
             // If event types doesn't match, we can set the events to null to avoid any issue
             lastEvent = null;
             currentEvent = null;
         }
     }
-
-    /*
-    By this way of thinking, the code will return one 'Ignoring file or event' even if the file is a zip file, but after the treatment.
-    So, it's not a problem for me, but if you find a way to avoid it, feel free to open a PR.
-    */ 
 });
 
 /*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
