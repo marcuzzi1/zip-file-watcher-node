@@ -24,32 +24,7 @@ var currentEvent = null; // Current event recorded
 
 // Watching path
 fs.watch(`${path}`, (eventType, fileName) => {
-    // Managing events
-    if (null === lastEvent) {
-        lastEvent = eventType; // Registering last event if it wasn't already
-        currentEvent = null; // Setting current event to null as well
-    } else {
-        currentEvent = eventType; // Registering current event
-
-        // We can continue in this case
-        if ('rename' === lastEvent && 'change' === currentEvent) { // Checking the event types
-            // Checking if file has ".zip" extension and still exists
-            if ('zip' === fileName.split('.')[1] && fs.existsSync(`${path}\\${fileName}`)) {
-                // CHANGEME - do whatever you want with your file
-                console.log(`File '${fileName}' has been added, extracting it...`); // FIXME - change this for better logs in file
-            } else {
-                console.log(`File '${fileName} is ignored because it doesn't match the criteria`); // FIXME - change this for better logs in file
-            }
-            // Now, it doesn't matters for us, so we can set the events to null to avoid any issue (in both cases this piece of code is reached)
-            // lastEvent = null;
-            // currentEvent = null;
-        } else {
-            console.log(`Event types doesn't match our needs (${lastEvent} -> ${currentEvent})`); // FIXME - change this for better logs in file
-            // If event types doesn't match, we can set the events to null to avoid any issue
-            lastEvent = null;
-            currentEvent = null;
-        }
-    }
+    console.log(`Event type is: ${eventType}`); // Sending event type to console
 });
 
 /*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
