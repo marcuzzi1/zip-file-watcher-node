@@ -48,6 +48,11 @@ fs.watch(`${path}`, (eventType, fileName) => {
             currentEvent = null;
         }
     }
+
+    /*
+    By this way of thinking, the code will return one 'Ignoring file or event' even if the file is a zip file, but after the treatment.
+    So, it's not a problem for me, but if you find a way to avoid it, feel free to open a PR.
+    */ 
 });
 
 /*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
