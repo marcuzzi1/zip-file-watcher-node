@@ -4,7 +4,7 @@
   "description": "Application that looks continually for a new zip file/folder added in the source path you want, unzip it then delete the .zip",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -21,5 +21,8 @@
   "bugs": {
     "url": "https://github.com/marcuzzi1/zip-file-watcher-node/issues"
   },
-  "homepage": "https://github.com/marcuzzi1/zip-file-watcher-node#readme"
+  "homepage": "https://github.com/marcuzzi1/zip-file-watcher-node#readme",
+  "dependencies": {
+    "watcher": "^2.3.0"
+  }
 }

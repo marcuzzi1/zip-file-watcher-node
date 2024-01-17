@@ -1,0 +1,2 @@
+# Ignore node modules (we don't want to upload them to GitHub)
+node_modules
