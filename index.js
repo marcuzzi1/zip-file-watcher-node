@@ -1,3 +1,6 @@
+// Sending Hello World to console to check if script is started
+console.log('Hello World from zip-file-watcher-node!');
+
 // Parsing args
 var parsedArgs = require('minimist')(process.argv.slice(2)); // Parse arguments with minimist
 var path = parsedArgs.path?.toString() || undefined; // Extracting path to watch (from args)
@@ -16,6 +19,8 @@ const fs = require('fs');
 // Declaring some variables
 var lastEvent = null; // Last event recorded
 var currentEvent = null; // Current event recorded
+
+// TODO - add path verification (if it exists, if it's a folder, etc.)
 
 // Watching path
 fs.watch(`${path}`, (eventType, fileName) => {
