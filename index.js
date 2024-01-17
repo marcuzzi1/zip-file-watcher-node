@@ -1,6 +1,6 @@
 // Parsing args
 var parsedArgs = require('minimist')(process.argv.slice(2)); // Parse arguments with minimist
-var path = parsedArgs.path.toString() || undefined; // Extracting path to watch (from args)
+var path = parsedArgs.path?.toString() || undefined; // Extracting path to watch (from args)
 
 // Verifying if path is defined (don't ask me why, but it's not working without verifying 'true', must be from minimist...)
 // PS: If you have a better idea or a fix, please tell me by opening a PR or an issue
@@ -12,12 +12,34 @@ if (path === undefined || path === 'true') {
 // Using fs
 const fs = require('fs');
 
+// Declaring some variables
+var lastEvent = null; // Last event recorded
+var currentEvent = null; // Current event recorded
+
 // Watching path
 fs.watch(`${path}`, (eventType, fileName) => {
-    console.log(eventType, fileName); // Log event type and file name
+    // Managing events
+    if (null === lastEvent) {
+        lastEvent = eventType; // Registering last event if it wasn't already
+        currentEvent = null; // Setting current event to null as well
+    } else {
+        currentEvent = eventType; // Registering current event
+
+        // We can continue in this case
+        if ('rename' === lastEvent && 'change' === currentEvent) { // Checking the event types
+            // Checking if file has ".zip" extension
+            if ('zip' === fileName.split('.')[1]) {
+                // CHANGEME - do whatever you want with your file
+            }
+        } else {
+            // If event types doesn't match, we can set the events to null to avoid any issue
+            lastEvent = null;
+            currentEvent = null;
+        }
+    }
 });
 
-/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 With some dummies tests I found that:
     -> Adding a file (dragging/copying) will trigger 2 events: rename and change
     -> Deleting a file will trigger 1 event: rename
@@ -34,4 +56,6 @@ So, I suggest we proceed as follows:
 
 If you need to adapt the treatment of your file(s) and you don't succeed, feel free to open an issue and if I know
 how, it will be a pleasure to help you.
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+
+Also, I use to compare with consant before variable, it's an habit, but you can do it the other way around if you want.
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/

@@ -4,7 +4,6 @@
   "description": "Application that looks continually for a new zip file/folder added in the source path you want, unzip it then delete the .zip",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js --path"
   },
   "repository": {
     "type": "git",
