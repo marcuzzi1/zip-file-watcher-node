@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/marcuzzi1/zip-file-watcher-node#readme",
   "dependencies": {
+    "minimist": "^1.2.8",
     "watcher": "^2.3.0"
   }
 }
