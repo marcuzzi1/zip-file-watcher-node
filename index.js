@@ -6,6 +6,7 @@ var path = parsedArgs.path?.toString() || undefined; // Extracting path to watch
 // PS: If you have a better idea or a fix, please tell me by opening a PR or an issue
 if (path === undefined || path === 'true') {
     console.error(`Path must be defined. Use command like that: npm start "path/to/watch"`); // Fancy error for the user
+    // TODO - add this error to a log file
     process.exit(1); // Exit process
 }
 
@@ -27,10 +28,15 @@ fs.watch(`${path}`, (eventType, fileName) => {
 
         // We can continue in this case
         if ('rename' === lastEvent && 'change' === currentEvent) { // Checking the event types
-            // Checking if file has ".zip" extension
-            if ('zip' === fileName.split('.')[1]) {
+            // Checking if file has ".zip" extension and still exists
+            if ('zip' === fileName.split('.')[1] && fs.existsSync(`${path}\\${fileName}`)) {
                 // CHANGEME - do whatever you want with your file
+                console.log(`File '${fileName}' has been added, extracting it...`); // FIXME - change this for better logs in file
             }
+            // Otherwise, it doesn't matters for us, so we can set the events to null to avoid any issue (in both cases this piece of code is reached)
+            console.log(`Ignoring file or event`); // TODO - remove this after first tests
+            lastEvent = null;
+            currentEvent = null;
         } else {
             // If event types doesn't match, we can set the events to null to avoid any issue
             lastEvent = null;
