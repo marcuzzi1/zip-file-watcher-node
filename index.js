@@ -1,5 +1,8 @@
+// Defining log element
+const log = console.log.bind(console); // TODO - change this for better logs in a file
+
 // Sending Hello World to console to check if script is started
-console.log('Hello World from zip-file-watcher-node!');
+log('Hello World from zip-file-watcher-node!');
 
 // Parsing args
 var parsedArgs = require('minimist')(process.argv.slice(2)); // Parse arguments with minimist
@@ -13,37 +16,16 @@ if (path === undefined || path === 'true') {
     process.exit(1); // Exit process
 }
 
-// Using fs
-const fs = require('fs');
-
-// Declaring some variables
-var lastEvent = null; // Last event recorded
-var currentEvent = null; // Current event recorded
+// Importing modules
+const fs = require('fs'); // File system module
+const chokidar = require('chokidar'); // chokidar module (file watcher)
 
 // TODO - add path verification (if it exists, if it's a folder, etc.)
 
-// Watching path
-fs.watch(`${path}`, (eventType, fileName) => {
-    console.log(`Event type is: ${eventType}`); // Sending event type to console
+// Creating the watcher
+const watcher = chokidar.watch(path, { persistent: true, ignoreInitial: true });
+
+// Watching for 'add' event
+watcher.on('add', (filePath) => {
+    log(`File ${filePath} has been added`);
 });
-
-/*////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-With some dummies tests I found that:
-    -> Adding a file (dragging/copying) will trigger 2 events: rename and change
-    -> Deleting a file will trigger 1 event: rename
-So, I suggest we proceed as follows:
-    -> Register the current event in a variable
-    -> Register the next one (during next triggered event) into another variable
-    -> Check if last event is rename and current event is change, then:
-        -> Check if file has ".zip" extension (could be ".rar" or ".7z" or whatever you need as long as you can adapt it),
-        also check if it still exists (because it could've been deleted during the process)
-        -> If true, then:
-            -> In my case, I need to extract the zip content into the same folder, then delete the zip file
-            (You can do whatever you want, feel free to adapt it to your needs)
-            -> After all, I put null value in both variables
-
-If you need to adapt the treatment of your file(s) and you don't succeed, feel free to open an issue and if I know
-how, it will be a pleasure to help you.
-
-Also, I use to compare with consant before variable, it's an habit, but you can do it the other way around if you want.
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
